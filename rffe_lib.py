@@ -241,6 +241,12 @@ class RFFEControllerBoard:
         temp = self.board_socket.recv(1024)
         return(temp[3:20])
 
+    def set_ip(self, ip):
+        """Sets the IP Address. The value is passed as a string."""
+        ip_hex = ' '.join(x.encode('hex') for x in ip)
+        self.board_socket.send(bytearray.fromhex("20 00 11 12 "+ip_hex+" 00"*(16-len(ip))))
+        #self.board_socket.send(bytearray.fromhex("20 00 0C 12 "+ip_hex))
+        temp = self.board_socket.recv(1024)
     def close(self):
         """Close the socket connection to the board."""
         self.board_socket.close()
