@@ -1,13 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import numpy
 import socket
 import struct
 import re
 
 class RFFEControllerBoard:
     """Class used to send commands and acquire data from the RF front-end controller board."""
+
+    ATT_VALID_VALUES = [x * .5 for x in range(64)]
 
     def __init__(self, ip, port=6791):
         """Class constructor. Here the socket connection to the board is initialized. The argument
@@ -31,7 +32,7 @@ class RFFEControllerBoard:
         """Sets the attenuation value of both front-ends. The agrument should be a
         floating-point number representing the attenuation (in dB) between 0 dB and 31.5 dB, with a
         0.5 dB step size. Argument values other than these will be disconsidered."""
-        if (value not in tuple(numpy.linspace(0, 31.5, 64))):
+        if (value not in ATT_VALID_VALUES:
             raise ValueError("Value must be between 0 dB and 31.5 dB, with a 0.5 dB step size")
         else:
             self.board_socket.send(bytearray.fromhex("20 00 09 00") + struct.pack("<d", value))
