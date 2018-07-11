@@ -1,4 +1,4 @@
-# RFFE-py
+# RFFE_py
 
 Python library to communicate with the RFFE Box
 
@@ -8,7 +8,7 @@ To communicate with the RFFE box, first you need to know its IP address and make
 Then, open a python (either 2.7 or 3.4) interpreter or include in your script the following code (don't forget to change the IP address).
 
 ```python
-from rffe-lib import *
+from rffe_lib import *
 RFFE = RFFEControllerBoard("10.2.118.200")
 ```
 
