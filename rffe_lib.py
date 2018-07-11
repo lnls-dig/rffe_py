@@ -32,7 +32,7 @@ class RFFEControllerBoard:
         """Sets the attenuation value of both front-ends. The agrument should be a
         floating-point number representing the attenuation (in dB) between 0 dB and 31.5 dB, with a
         0.5 dB step size. Argument values other than these will be disconsidered."""
-        if (value not in ATT_VALID_VALUES:
+        if (value not in ATT_VALID_VALUES):
             raise ValueError("Value must be between 0 dB and 31.5 dB, with a 0.5 dB step size")
         else:
             self.board_socket.send(bytearray.fromhex("20 00 09 00") + struct.pack("<d", value))
