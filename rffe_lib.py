@@ -134,11 +134,11 @@ class RFFEControllerBoard:
         major, minor, patch = map(int,re.split('[., _]',version))
 
         with open(file_path, "rb") as f:
-            msg = bytearray.fromhex("20 00 80 0A")
+            msg = bytearray.fromhex("20 00 81 0A")
             #Send firmware new version
             msg.extend([major,minor,patch])
             #Pad
-            msg.extend(b'\0'*(128+3-len(msg)))
+            msg.extend(b'\0'*(129+3-len(msg)))
             self.board_socket.send(msg)
             temp = self.board_socket.recv(1024)
 
@@ -146,12 +146,12 @@ class RFFEControllerBoard:
             temp = self.board_socket.recv(1024)
 
             while True:
-                data = f.read(127)
+                data = f.read(128)
                 if (not data):
                     break
-                elif (len(data) < 127):
-                    data = data + (b"\xFF" * (127 - len(data)))
-                self.board_socket.send(bytearray.fromhex("20 00 80 0A") + data)
+                elif (len(data) < 128):
+                    data = data + (b"\xFF" * (128 - len(data)))
+                self.board_socket.send(bytearray.fromhex("20 00 81 0A") + data)
                 temp = self.board_socket.recv(1024)
 
             self.board_socket.send(bytearray.fromhex("20 00 02 09 02"))
