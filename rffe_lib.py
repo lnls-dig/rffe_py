@@ -123,7 +123,6 @@ class RFFEControllerBoard:
     def reset(self):
         """This method resets the board software."""
         self.board_socket.send(bytearray.fromhex("20 00 02 08 01"))
-        temp = self.board_socket.recv(1024)
 
     def reprogram(self, file_path, version):
         """This method reprograms the mbed device on the RF front-end controller board. The
