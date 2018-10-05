@@ -156,6 +156,8 @@ class RFFEControllerBoard:
             self.board_socket.send(bytearray.fromhex("20 00 02 09 02"))
             temp = self.board_socket.recv(1024)
 
+            self.reset()
+
     def get_software_version(self):
         """This method returns the RF front-end controller software version as a binary
         string of characters."""
