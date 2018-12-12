@@ -14,7 +14,7 @@ class RFFEControllerBoard:
         """Class constructor. Here the socket connection to the board is initialized. The argument
         required is the IP adress of the instrument (string)."""
         self.ip = ip
-        self.port = 6791
+        self.port = port
 
         self.board_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.board_socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
