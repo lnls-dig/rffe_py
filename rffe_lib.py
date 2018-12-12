@@ -124,7 +124,7 @@ class RFFEControllerBoard:
         """This method resets the board software."""
         self.board_socket.send(bytearray.fromhex("20 00 02 08 01"))
 
-    def reprogram(self, file_path, version):
+    def reprogram(self, file_path, version, bootloader=False):
         """This method reprograms the mbed device on the RF front-end controller board. The
         first argument, a string, is the path to the binary file which corresponds to the mbed
         program will be loaded in the device. The second argument is the new firmware version
@@ -134,10 +134,17 @@ class RFFEControllerBoard:
 
         with open(file_path, "rb") as f:
             msg = bytearray.fromhex("20 00 81 0A")
+
             #Send firmware new version
             msg.extend([major,minor,patch])
-            #Pad
-            msg.extend(b'\0'*(129+3-len(msg)))
+
+            if (bootloader):
+                msg.extend([2])
+            else:
+                msg.extend([1])
+
+            #Pad (Total size of packet = 132; Payload: 128 bytes; Header: 4 bytes)
+            msg.extend(b'\0'*(128+4-len(msg)))
             self.board_socket.send(msg)
             temp = self.board_socket.recv(1024)
 
