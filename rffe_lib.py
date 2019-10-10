@@ -151,6 +151,7 @@ class RFFEControllerBoard:
             self.board_socket.send(bytearray.fromhex("20 00 02 09 01"))
             temp = self.board_socket.recv(1024)
 
+            bytes_written = 0
             while True:
                 data = f.read(128)
                 if (not data):
@@ -158,6 +159,12 @@ class RFFEControllerBoard:
                 elif (len(data) < 128):
                     data = data + (b"\xFF" * (128 - len(data)))
                 self.board_socket.send(bytearray.fromhex("20 00 81 0A") + data)
+                temp = self.board_socket.recv(1024)
+                bytes_written += len(data)
+
+            #If the last sector was only half written, send more 128 bytes
+            if (bytes_written % 256) != 0:
+                self.board_socket.send(bytearray.fromhex("20 00 81 0A") + (b"\xFF" * 128))
                 temp = self.board_socket.recv(1024)
 
             self.board_socket.send(bytearray.fromhex("20 00 02 09 02"))
